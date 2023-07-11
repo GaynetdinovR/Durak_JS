@@ -1,44 +1,83 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const webpack = require('webpack')
-
-function getPath(dir) {
-    return path.resolve(__dirname, dir)
-}
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 
 module.exports = {
-    mode: 'development',
-    entry: {
-        main: getPath('./src/main.js'),
+    entry: path.join(__dirname, 'src', 'index.js'),
+    output: {
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle.min.js',
+    },
+    devtool: 'source-map',
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                use: 'babel-loader',
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.(s[a,c]ss|css)$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader', 
+                    'postcss-loader', 
+                    'sass-loader'
+                ],
+            }
+        ],
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: getPath('./src/html/template.html'),
+            template: path.join(__dirname, 'src', 'html', 'template.html'),
             filename: 'index.html',
         }),
-        new CleanWebpackPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'bundle.min.css'
+        }),
+        new FileManagerPlugin({
+            events: {
+                onStart: {
+                    delete: ['dist']
+                },
+            },
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src', 'images'),
+                    to: path.resolve(__dirname, 'dist', 'assets', 'images')
+                },
+                {
+                    from: path.resolve(__dirname, 'src', 'fonts'),
+                    to: path.resolve(__dirname, 'dist', 'assets', 'fonts')
+                }
+            ]
+        }),
     ],
-    module: {
-        rules: [{
-            test: /\.(sass|css)$/,
-            use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
-        }],
-    },
     devServer: {
-        historyApiFallback: true,
-        static: {
-            directory: getPath('./dist'),
-        },
-        open: true,
-        compress: true,
-        hot: true,
-        port: 8080,
+        watchFiles: path.join(__dirname, 'src'),
+        port: 9000,
     },
-    output: {
-        path: getPath('./dist'),
-        filename: '[name].bundle.js'
+    optimization: {
+        minimizer: [
+            "...",
+            new ImageMinimizerPlugin({
+                minimizer: {
+                    implementation: ImageMinimizerPlugin.imageminMinify,
+                    options: {
+                        plugins: [
+                            ["jpegtran", { progressive: true }],
+                            ["optipng", { optimizationLevel: 5 }],
+                            "svgo",
+                        ],
+                    },
+                },
+            }),
+        ],
     },
-}
+};
