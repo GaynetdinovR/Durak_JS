@@ -1,0 +1,28 @@
+.display
+
+    &__deck
+        margin: 100px 50px
+
+        position: absolute
+
+        &-card
+            width: 100px
+            position: absolute
+
+        &-card-img
+            max-width: 100%
+            object-fit: contain
+
+        &-trump-card
+            width: 100px
+            position: absolute
+            z-index: -1
+            
+
+        &-trump-card-img
+            max-width: 100%
+            object-fit: contain
+
+@for $i from 3 through 12
+    .display__deck-card:nth-child(#{$i - 3})
+        margin-top: calc(20px * $i)
