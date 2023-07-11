@@ -4,22 +4,63 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Durak | JS</title>
 </head>
 
 <body>
 
     <header class="header">
 
+		<div class="header__logo">
+			<img src="./assets/images/icons/logo.png" alt="logo" class="header__logo-img">
+		</div>
+
+		<div class="header__game-info">
+
+			<span class="header__game-mode">
+				<span>Режим: </span>
+				<span id="game_mode"></span>
+			</span>
+
+			<span class="header__game-difficulty">
+				<span>Уровень ИИ:</span>
+				<span id="game_difficulty"></span>
+			</span>
+
+			<span class="header__game-cards-count">
+				<span>Количество карт:</span>
+				<span id="game_cards-count"></span>
+			</span>
+
+		</div>
+
+		<nav class="header__controls">
+			<ul class="header__controls-list">
+
+				<li class="header__controls-item">
+
+					<button class="header__controls-btn" id="game_to-menu">
+						<img src="./assets/images/icons/arrow.png" alt="arrow" class="header__controls-btn-img">
+					</button>
+
+				</li>
+
+				<li class="header__controls-item">
+
+					<button class="header__controls-btn" id="game_settings">
+						<img src="./assets/images/icons/settings.png" alt="settings" class="header__controls-btn-img">
+					</button>
+
+				</li>
+
+			</ul>
+		</nav>
+
     </header>
 
     <main class="content">
 
 	</main>
-
-	<footer class="footer">
-
-	</footer>
 
 </body>
 

@@ -1,7 +1,7 @@
 {
-  "name": "project_name",
+  "name": "durak_js",
   "version": "1.0.0",
-  "description": "",
+  "description": "durak - js game",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
@@ -10,6 +10,14 @@
   },
   "author": "GaynetdinovR",
   "license": "ISC",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/GaynetdinovR/Durak_JS.git"
+  },
+  "bugs": {
+      "url": "https://github.com/GaynetdinovR/Durak_JS/issues"
+  },
+  "homepage": "https://github.com/GaynetdinovR/Durak_JS#readme",
   "devDependencies": {
     "@babel/core": "^7.22.8",
     "@babel/preset-env": "^7.22.7",

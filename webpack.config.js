@@ -52,10 +52,10 @@ module.exports = {
                     from: path.resolve(__dirname, 'src', 'images'),
                     to: path.resolve(__dirname, 'dist', 'assets', 'images')
                 },
-                {
+                /*{
                     from: path.resolve(__dirname, 'src', 'fonts'),
                     to: path.resolve(__dirname, 'dist', 'assets', 'fonts')
-                }
+                }*/
             ]
         }),
     ],
