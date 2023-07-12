@@ -9,6 +9,13 @@ export default class Deck{
     #suits = ['Club', 'Diamond', 'Heart', 'Spade']
 
     constructor(){
+        this.initialize()
+    }
+
+    /**
+     * Инициализирует необходимые данные
+     */
+    initialize = () => {
         this.deck = this.#bundleDeck()
         this.shuffle()
         this.trumpCard = this.#getTrumpCard()
@@ -18,8 +25,8 @@ export default class Deck{
 
     /**
      * Добавляет джокеров в колоду
-     * @param {*} result 
-     * @returns 
+     * @param {*} result [{}, {}, ...]
+     * @returns deck
      */
     #addJockers = (deck) => {
         const jockers = [        
@@ -27,13 +34,15 @@ export default class Deck{
                 path: `${data.path.CARDS_DIR}/XR.png`, 
                 name: 'Red Jocker', 
                 color: 'red',
-                power: 15
+                power: 15,
+                suit: 'Jocker',
             },
             {
                 path: `${data.path.CARDS_DIR}/XB.png`,
                 name: 'Black Jocker',
                 color: 'black',
-                power: 15
+                power: 15,
+                suit: 'Jocker',
             }
         ]
 
@@ -46,8 +55,8 @@ export default class Deck{
 
     /**
      * Возвращает путь к изображению карты
-     * @param {*} card 
-     * @param {*} suit 
+     * @param {*} card string
+     * @param {*} suit string
      * @returns string
      */
     #getCardPath = (card, suit) => {
@@ -61,8 +70,8 @@ export default class Deck{
 
     /**
      * Возвращает силу карты
-     * @param {*} card 
-     * @param {*} suit 
+     * @param {*} card string
+     * @param {*} suit string
      * @returns string
      */
     #getCardPower = (card) => {
@@ -72,8 +81,8 @@ export default class Deck{
 
     /**
      * Возвращает цвет карты
-     * @param {*} card 
-     * @param {*} suit 
+     * @param {*} card string
+     * @param {*} suit string
      * @returns string
      */
     #getCardColor = (suit) => {
@@ -83,8 +92,8 @@ export default class Deck{
 
     /**
      * Возвращает название карты
-     * @param {*} card 
-     * @param {*} suit 
+     * @param {*} card string
+     * @param {*} suit string
      * @returns string
      */
     #getCardName = (card, suit) => {
@@ -107,7 +116,8 @@ export default class Deck{
                     path: this.#getCardPath(card, suit),
                     name: this.#getCardName(card, suit),
                     color: this.#getCardColor(suit),
-                    power: this.#getCardPower(card)
+                    power: this.#getCardPower(card),
+                    suit: suit
                 }
     
                 deck.push(cardInfo)
@@ -132,17 +142,12 @@ export default class Deck{
      * Возвращает козырную карту
      */
     #getTrumpCard = () => {
-        let temp = this.deck[0]
-        this.deck[0] = this.deck[this.deck.length - 1]
-        this.deck[this.deck.length - 1] = temp
-
-        return temp
+        return this.deck[this.deck.length - 1]
     }
 
     /**
      * Перемещает карту в бито
-     * @param {*} card 
-     * @returns 
+     * @param {*} card {}
      */
     moveToFall = (card) => {
 
@@ -153,5 +158,15 @@ export default class Deck{
         this.fall.push(this.deck.splice(i, 1))
 
     } 
+
+
+    /**
+     * Передает карты, убирая их из колоды
+     * @param {*} count numbers
+     * @returns 
+     */
+    giveCards = (count) => {
+        return this.deck.splice(0, count)
+    }
 
 }

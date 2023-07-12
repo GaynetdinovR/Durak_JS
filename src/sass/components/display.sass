@@ -1,12 +1,12 @@
 .display
     position: relative
     max-width: 100%
+    height: calc(100vh - 84px)
 
     &__deck
+        position: absolute
         left: 50px
         top: 100px
-
-        position: absolute
 
         &-card
             width: 100px
@@ -20,7 +20,6 @@
             width: 100px
             position: absolute
             z-index: -1
-            
 
         &-trump-card-img
             max-width: 100%
@@ -52,9 +51,35 @@
             max-width: 100%
             object-fit: contain
 
-@for $i from 3 through 12
-    .display__deck-card:nth-child(#{$i - 3})
-        margin-top: calc(20px * $i)
+    &__player
+        position: absolute
+        bottom: 100px
+
+        left: 50%
+        transform: translateX(-50%)
+
+        display: flex
+
+        &-card
+            width: 20px
+
+            transition: 200ms
+            cursor: pointer
+
+            &:not(.display__player-last-card):hover
+                width: 60px
+
+        &-last-card
+            width: 100px
+
+        &-card-img
+            width: 100px
+            object-fit: contain
+
+
+@for $i from 1 through 8
+    .display__deck-card:nth-child(#{$i})
+        margin-top: calc(80px + 20px * ($i - 1))
 
 @for $i from 1 through 8
     .display__fall-card:nth-child(#{$i})

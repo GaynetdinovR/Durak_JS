@@ -4,6 +4,7 @@ export default class Display{
 
     #deckHtmlElem = document.querySelector('#game_deck')
     #fallHtmlElem = document.querySelector('#game_fall')
+    #playerHtmlElem = document.querySelector('#game_player')
 
     /**
      * Очищает колоду (HTML)
@@ -21,14 +22,14 @@ export default class Display{
 
     /**
      * Возвращает количество карт, которые нужно показать в колоде
-     * @param {*} deck 
-     * @returns 
+     * @param {*} deck [{}, {}, ...]
+     * @returns number
      */
     #getCardsCount = (deck) => {
 
-        if(deck.length > 0 && deck.length < 7){ return 1 } 
-
         if(deck.length == 54){ return 7 }
+
+        if(deck.length > 0 && deck.length < 7){ return 1 } 
 
         if(Math.floor(deck.length / 7) == 7){ return 6 }
 
@@ -38,8 +39,8 @@ export default class Display{
 
     /**
      * Создает карту в колоде (HTML)
-     * @param {*} path 
-     * @param {*} isTrump 
+     * @param {*} path string
+     * @param {*} isTrump bool
      */
     #createCardToDeck = (path, isTrump = false) => {
 
@@ -58,8 +59,6 @@ export default class Display{
 
     /**
      * Создает карту в бито (HTML)
-     * @param {*} path 
-     * @param {*} isTrump 
      */
     #createCardToFall = () => {
 
@@ -93,8 +92,9 @@ export default class Display{
 
     /**
      * Обновляет колоду относительно количества карт
-     * @param {*} deck 
-     * @param {*} trumpCard 
+     * @param {*} deck [{}, {}, ...]
+     * @param {*} trumpCard {}
+     * @param {*} isCreated bool
      */
     updateDeck = (deck, trumpCard, isCreated = false) => {
 
@@ -111,11 +111,15 @@ export default class Display{
             this.#createCardToDeck(trumpCard['path'], true)
         }
 
+        if(deck.length == 0){
+            document.querySelector('.display__deck-trump-card').style.opacity = '0.5'
+        }
+
     }
 
     /**
      * Обновляет бито относительно количества карт
-     * @param {*} fall 
+     * @param {*} fall [{}, {}, ...]
      */
     updateFall = (fall) => {
 
@@ -129,6 +133,27 @@ export default class Display{
             this.#createCardToFall()
             cardsCount--
         }
+
+    }
+
+
+    /**
+     * Обновляет карты игрока
+     * @param {*} cards [{}, {}, ...]
+     */
+    updatePlayerCards = (cards) => {
+
+        for(const card of cards){
+            
+            const className = 'display__player-card-img';
+            
+            this.#createCard(className, card.path, this.#playerHtmlElem)
+
+        }
+
+        const lastCard = document.querySelector('.display__player-card:last-child')
+
+        lastCard.classList.add('display__player-last-card')
 
     }
 
