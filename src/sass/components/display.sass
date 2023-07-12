@@ -1,7 +1,10 @@
 .display
+    position: relative
+    max-width: 100%
 
     &__deck
-        margin: 100px 50px
+        left: 50px
+        top: 100px
 
         position: absolute
 
@@ -23,6 +26,36 @@
             max-width: 100%
             object-fit: contain
 
+    &__fall
+        right: 150px
+        top: 100px
+        position: absolute
+
+        &-null-card
+            width: 100px
+            position: absolute
+            opacity: 0.5
+
+        &-null-card-img
+            max-width: 100%
+            object-fit: contain
+
+        &-card
+            width: 100px
+            position: absolute
+
+        &-card:first-child
+            margin-top: 0
+
+            
+        &-card-img
+            max-width: 100%
+            object-fit: contain
+
 @for $i from 3 through 12
     .display__deck-card:nth-child(#{$i - 3})
         margin-top: calc(20px * $i)
+
+@for $i from 1 through 8
+    .display__fall-card:nth-child(#{$i})
+        margin-top: calc(20px * ($i - 1))

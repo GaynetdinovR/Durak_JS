@@ -1,4 +1,4 @@
-import path from './data/paths.json'
+import data from './data/path.json'
 
 export default class Deck{
 
@@ -12,6 +12,7 @@ export default class Deck{
         this.deck = this.#bundleDeck()
         this.shuffle()
         this.trumpCard = this.#getTrumpCard()
+        this.fall = []
     }
 
 
@@ -23,13 +24,13 @@ export default class Deck{
     #addJockers = (deck) => {
         const jockers = [        
             {
-                path: `${paths.paths.CARDS_DIR}/XR.png`, 
+                path: `${data.path.CARDS_DIR}/XR.png`, 
                 name: 'Red Jocker', 
                 color: 'red',
                 power: 15
             },
             {
-                path: `${paths.paths.CARDS_DIR}/XB.png`,
+                path: `${data.path.CARDS_DIR}/XB.png`,
                 name: 'Black Jocker',
                 color: 'black',
                 power: 15
@@ -51,10 +52,10 @@ export default class Deck{
      */
     #getCardPath = (card, suit) => {
         if(card[0] == '1'){
-            return `${paths.paths.CARDS_DIR}/${card[0] + card[1] + suit[0]}.png`
+            return `${data.path.CARDS_DIR}/${card[0] + card[1] + suit[0]}.png`
         }
 
-        return `${paths.paths.CARDS_DIR}/${card[0] + suit[0]}.png`
+        return `${data.path.CARDS_DIR}/${card[0] + suit[0]}.png`
     }
 
 
@@ -137,5 +138,20 @@ export default class Deck{
 
         return temp
     }
+
+    /**
+     * Перемещает карту в бито
+     * @param {*} card 
+     * @returns 
+     */
+    moveToFall = (card) => {
+
+        if(this.deck.length == 0) return
+
+        const i = this.deck.indexOf(card)
+
+        this.fall.push(this.deck.splice(i, 1))
+
+    } 
 
 }
