@@ -154,4 +154,21 @@ export default class Deck{
 		return this.deck.splice(0, count);
 	};
 
+	/**
+     * Возвращает количество карт, которые нужно показать в колоде
+     * @param {*} deck [{}, {}, ...]
+     * @returns number
+     */
+	getCardsCount = (deck) => {
+
+		if(deck.length == 54){ return 7; }
+
+		if(deck.length > 0 && deck.length < 7){ return 1; } 
+
+		if(Math.floor(deck.length / 7) == 7){ return 6; }
+
+		return Math.floor(deck.length / 7);
+        
+	};
+
 }
