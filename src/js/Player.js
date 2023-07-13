@@ -1,41 +1,41 @@
 export default class Player{
 
-    #cards = []
+	#cards = [];
 
-    constructor(cards, trumpSuit){
-        this.#cards = cards
-        this.trumpSuit = trumpSuit
-        this.#sortCards()
-    }
+	constructor(cards, trumpSuit){
+		this.#cards = cards;
+		this.trumpSuit = trumpSuit;
+		this.#sortCards();
+	}
 
-    /**
+	/**
      * Геттер для карт игрока
      * @returns [{}, {}, ...]
      */
-    getCards = () => {
-        return this.#cards
-    }
+	getCards = () => {
+		return this.#cards;
+	};
 
-    /**
+	/**
      * Сортирует карты игрока ( Сначала джокеры, затем козырные по убыванию, затем остальные по убыванию )
      */
-    #sortCards = () => {
+	#sortCards = () => {
 
-        const compare = (a, b) => {
-            if (a.power > b.power) return -1;
-            if (a.power == b.power) return 0;
-            if (a.power < b.power) return 1;
-        }
+		const compare = (a, b) => {
+			if (a.power > b.power) return -1;
+			if (a.power == b.power) return 0;
+			if (a.power < b.power) return 1;
+		};
 
-        this.#cards.sort(compare)
+		this.#cards.sort(compare);
 
-        let trumpCards = this.#cards.filter(card => card.suit == this.trumpSuit)
-        let jockers = this.#cards.filter(card => card.suit == 'Jocker')
-        let notTrumpCards = this.#cards.filter(card => card.suit != this.trumpSuit && card.suit != 'Jocker')
+		let trumpCards = this.#cards.filter(card => card.suit == this.trumpSuit);
+		let jockers = this.#cards.filter(card => card.suit == 'Jocker');
+		let notTrumpCards = this.#cards.filter(card => card.suit != this.trumpSuit && card.suit != 'Jocker');
 
-        this.#cards = [...jockers, ...trumpCards, ...notTrumpCards]
+		this.#cards = [...jockers, ...trumpCards, ...notTrumpCards];
 
-    }
+	};
 
 
 

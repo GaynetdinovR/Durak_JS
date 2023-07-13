@@ -4,7 +4,7 @@ const FileManagerPlugin = require('filemanager-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     entry: path.join(__dirname, 'src', 'index.js'),
@@ -58,6 +58,7 @@ module.exports = {
                 }*/
             ]
         }),
+        new ESLintPlugin({'fix': true}),
     ],
     devServer: {
         watchFiles: path.join(__dirname, 'src'),
