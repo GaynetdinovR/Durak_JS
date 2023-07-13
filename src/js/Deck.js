@@ -1,23 +1,23 @@
-import data from './data/path.json'
+import data from './data/data.json'
 
 export default class Deck{
 
     /**
      * Карты и масти
      */
-    #cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace']
-    #suits = ['Club', 'Diamond', 'Heart', 'Spade']
+    #cards = data.cards
+    #suits = data.suits
 
     constructor(){
-        this.initialize()
+        this.#initialize()
     }
 
     /**
      * Инициализирует необходимые данные
      */
-    initialize = () => {
+    #initialize = () => {
         this.deck = this.#bundleDeck()
-        this.shuffle()
+        this.#shuffle()
         this.trumpCard = this.#getTrumpCard()
         this.fall = []
     }
@@ -29,22 +29,7 @@ export default class Deck{
      * @returns deck
      */
     #addJockers = (deck) => {
-        const jockers = [        
-            {
-                path: `${data.path.CARDS_DIR}/XR.png`, 
-                name: 'Red Jocker', 
-                color: 'red',
-                power: 15,
-                suit: 'Jocker',
-            },
-            {
-                path: `${data.path.CARDS_DIR}/XB.png`,
-                name: 'Black Jocker',
-                color: 'black',
-                power: 15,
-                suit: 'Jocker',
-            }
-        ]
+        const jockers = data.jockers
 
         deck.push(jockers[0])
         deck.push(jockers[1])
@@ -134,7 +119,7 @@ export default class Deck{
     /**
      * Перемешивает колоду
      */
-    shuffle = () => {
+    #shuffle = () => {
         this.deck.sort(() => Math.random() - 0.5)
     }
 

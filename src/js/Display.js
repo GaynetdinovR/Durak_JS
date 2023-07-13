@@ -1,4 +1,4 @@
-import data from './data/path.json'
+import data from './data/data.json'
 
 export default class Display{
 
@@ -11,6 +11,13 @@ export default class Display{
      */
     #clearDeck = () => {
         this.#deckHtmlElem.innerHTML = ''
+    }
+
+    /**
+     * Очищает колоду (HTML)
+     */
+    #clearPlayer = () => {
+        this.#playerHtmlElem.innerHTML = ''
     }
 
     /**
@@ -46,11 +53,11 @@ export default class Display{
 
         if(!isTrump){
             path = `${data.path.CARDS_DIR}/back.png`
-            const className = 'display__deck-card-img'
+            const className = 'deck__card-img'
 
             this.#createCard(className, path, this.#deckHtmlElem)
         } else {
-            const className = 'display__deck-trump-card-img'
+            const className = 'deck__trump-card-img'
 
             this.#createCard(className, path, this.#deckHtmlElem)
         }
@@ -63,7 +70,7 @@ export default class Display{
     #createCardToFall = () => {
 
         const path = `${data.path.CARDS_DIR}/back.png`
-        const className = 'display__fall-card-img'
+        const className = 'fall__card-img'
 
         this.#createCard(className, path, this.#fallHtmlElem)
 
@@ -112,7 +119,7 @@ export default class Display{
         }
 
         if(deck.length == 0){
-            document.querySelector('.display__deck-trump-card').style.opacity = '0.5'
+            document.querySelector('.deck__trump-card').style.opacity = '0.5'
         }
 
     }
@@ -143,17 +150,19 @@ export default class Display{
      */
     updatePlayerCards = (cards) => {
 
+        this.#clearPlayer()
+
         for(const card of cards){
             
-            const className = 'display__player-card-img';
+            const className = 'player__card-img';
             
             this.#createCard(className, card.path, this.#playerHtmlElem)
 
         }
 
-        const lastCard = document.querySelector('.display__player-card:last-child')
+        const lastCard = document.querySelector('.player__card:last-child')
 
-        lastCard.classList.add('display__player-last-card')
+        lastCard.classList.add('player__last-card')
 
     }
 
