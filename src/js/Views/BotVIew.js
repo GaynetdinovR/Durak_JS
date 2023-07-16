@@ -4,6 +4,9 @@ export default class BotView extends View{
 
 	#botHtmlElem = document.querySelector('#game_bot');
 
+	/**
+	 * Очищает HTML бота
+	 */
 	#clearBot = () => {
 		this.clear(this.#botHtmlElem);
 	};
@@ -13,6 +16,7 @@ export default class BotView extends View{
      * @param {*} cards [{}, {}, ...]
      */
 	updateBotCards = (cards) => {
+		if(cards.length == 0) return;
 
 		this.#clearBot();
         

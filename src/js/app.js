@@ -2,16 +2,27 @@
 
 import Deck from './Deck.js';
 import Display from './Display.js';
+import Animation from './Animation.js';
 import Player from './Player.js';
 import Bot from './Bot.js';
 
-export const deck = new Deck();
+const deck = new Deck();
 const display = new Display();
+const animation = new Animation();
 
-const bot = new Bot(deck.giveCards(6), deck.trumpCard.suit);
-const player = new Player(deck.giveCards(6), deck.trumpCard.suit);
+const cardsCount = 12;
+const initTime = 150; 
 
-display.updateDeck(deck.deck, deck.trumpCard);
+const bot = new Bot([], deck.trumpCard.suit);
+const player = new Player([], deck.trumpCard.suit);
+
+animation.initAnimation(cardsCount, initTime);
+
 display.updateFall(deck.fall);
-display.updatePlayerCards(player.getCards());
-display.updateBotCards(bot.getCards());
+
+export {
+	deck,
+	player,
+	bot,
+	display
+};

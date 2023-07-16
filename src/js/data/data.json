@@ -19,5 +19,6 @@
             "power": "15",
             "suit": "Jocker"
         }
-    ]
+    ],
+    "playersCount": 2
 }

@@ -5,7 +5,7 @@ export default class Player{
 	constructor(cards, trumpSuit){
 		this.#cards = cards;
 		this.trumpSuit = trumpSuit;
-		this.sortCards(this.#cards);
+		this.#cards = this.sortCards(this.#cards);
 	}
 
 	/**
@@ -14,6 +14,11 @@ export default class Player{
      */
 	getCards = () => {
 		return this.#cards;
+	};
+
+	addCard = (card) => {
+		this.#cards.push(card);
+		this.#cards = this.sortCards(this.#cards);
 	};
 
 	/**
@@ -33,7 +38,8 @@ export default class Player{
 		let jockers = cards.filter(card => card.suit == 'Jocker');
 		let notTrumpCards = cards.filter(card => card.suit != this.trumpSuit && card.suit != 'Jocker');
 
-		cards = [...jockers, ...trumpCards, ...notTrumpCards];
+
+		return [...jockers, ...trumpCards, ...notTrumpCards];
 
 	};
 

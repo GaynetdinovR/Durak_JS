@@ -163,7 +163,9 @@ export default class Deck{
 
 		if(deck.length == 54){ return 7; }
 
-		if(deck.length > 0 && deck.length < 7){ return 1; } 
+		if(deck.length == 1){ return 0; } 
+
+		if(deck.length > 1 && deck.length < 7){ return 1; } 
 
 		if(Math.floor(deck.length / 7) == 7){ return 6; }
 

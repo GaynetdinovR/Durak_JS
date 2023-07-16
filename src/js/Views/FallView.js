@@ -5,6 +5,9 @@ export default class FallView extends View{
 
 	#fallHtmlElem = document.querySelector('#game_fall');
 
+	/**
+	 * Очищает HTML бито
+	 */
 	#clearFall = () => {
 		this.clear(this.#fallHtmlElem);
 	};

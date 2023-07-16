@@ -4,6 +4,9 @@ export default class PlayerView extends View{
 
 	#playerHtmlElem = document.querySelector('#game_player');
 
+	/**
+	 * Очищает HTML игрока
+	 */
 	#clearPlayer = () => {
 		this.clear(this.#playerHtmlElem);
 	};
@@ -13,13 +16,14 @@ export default class PlayerView extends View{
      * @param {*} cards [{}, {}, ...]
      */
 	updatePlayerCards = (cards) => {
+		if(cards.length == 0) return;
 
 		this.#clearPlayer();
 
 		for(const card of cards){
             
 			const className = 'player__card';
-            
+					
 			this.createCard(className, this.#playerHtmlElem, card.path);
 
 		}

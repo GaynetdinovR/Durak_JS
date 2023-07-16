@@ -5,6 +5,9 @@ export default class DeckView extends View{
 
 	#deckHtmlElem = document.querySelector('#game_deck');
 
+	/**
+	 * Очищает HTML колоды
+	 */
 	#clearDeck = () => {
 		this.clear(this.#deckHtmlElem);
 	};
