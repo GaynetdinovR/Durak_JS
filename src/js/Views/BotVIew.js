@@ -2,7 +2,9 @@ import View from './View.js';
 
 export default class BotView extends View{
 
+	//HTMLElem
 	#botHtmlElem = document.querySelector('#game_bot');
+
 
 	/**
 	 * Очищает HTML бота
@@ -10,6 +12,7 @@ export default class BotView extends View{
 	#clearBot = () => {
 		this.clear(this.#botHtmlElem);
 	};
+
 
 	/**
      * Обновляет карты бота

@@ -6,7 +6,7 @@ export default class Bot extends Player{
 
 	constructor(cards, trumpSuit){
 		super(cards, trumpSuit);
-		this.sortCards(this.#cards);
+		this.#cards = this._sortCards(this.#cards);
 	}
 
 }

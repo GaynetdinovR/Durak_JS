@@ -2,7 +2,8 @@ import {
 	deckView, 
 	botView, 
 	playerView, 
-	fallView
+	fallView,
+	tableView
 } from './Views/views.js';
 
 export default class Display{
@@ -22,5 +23,9 @@ export default class Display{
 	updateBotCards = (cards) => {
 		botView.updateBotCards(cards);
 	};
+
+	updateTable = (cards) => {
+		tableView.updateTableCards(cards);
+	}; 
 
 }

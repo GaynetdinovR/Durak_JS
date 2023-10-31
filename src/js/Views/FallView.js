@@ -3,7 +3,9 @@ import {deck as deckData} from '../app.js';
 
 export default class FallView extends View{
 
+	//HTMLElem
 	#fallHtmlElem = document.querySelector('#game_fall');
+
 
 	/**
 	 * Очищает HTML бито
@@ -12,6 +14,7 @@ export default class FallView extends View{
 		this.clear(this.#fallHtmlElem);
 	};
 
+	
 	/**
      * Обновляет бито относительно количества карт
      * @param {*} fall [{}, {}, ...]

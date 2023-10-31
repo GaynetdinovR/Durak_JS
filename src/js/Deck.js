@@ -2,10 +2,9 @@ import data from './data/data.json';
 
 export default class Deck{
 
-	/**
-     * Карты и масти
-     */
+	// Карты
 	#cards = data.cards;
+	// Масти
 	#suits = data.suits;
 
 	constructor(){
@@ -116,6 +115,7 @@ export default class Deck{
     
 	};
 
+
 	/**
      * Перемешивает колоду
      */
@@ -123,12 +123,14 @@ export default class Deck{
 		this.deck.sort(() => Math.random() - 0.5);
 	};
 
+
 	/**
      * Возвращает козырную карту
      */
 	#getTrumpCard = () => {
 		return this.deck[this.deck.length - 1];
 	};
+
 
 	/**
      * Перемещает карту в бито
@@ -153,6 +155,7 @@ export default class Deck{
 	giveCards = (count) => {
 		return this.deck.splice(0, count);
 	};
+
 
 	/**
      * Возвращает количество карт, которые нужно показать в колоде

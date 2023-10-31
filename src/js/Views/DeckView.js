@@ -3,14 +3,17 @@ import {deck as deckData} from '../app.js';
 
 export default class DeckView extends View{
 
+	//HTMLElem
 	#deckHtmlElem = document.querySelector('#game_deck');
 
+	
 	/**
 	 * Очищает HTML колоды
 	 */
 	#clearDeck = () => {
 		this.clear(this.#deckHtmlElem);
 	};
+
 
 	/**
      * Обновляет колоду относительно количества карт
