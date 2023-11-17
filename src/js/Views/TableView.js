@@ -7,21 +7,13 @@ export default class TableView extends View{
 
 
 	/**
-	 * Очищает HTML бота
-	 */
-	#clearTable = () => {
-		this.clear(this.#tableHtmlElem);
-	};
-
-	
-	/**
      * Обновляет карты бота
      * @param {*} cards [{}, {}, ...]
      */
 	updateTableCards = (cards) => {
 		if(cards.length == 0) return;
 
-		this.#clearTable();
+		this.clear(this.#tableHtmlElem);
         
 		for(const card of cards){
             

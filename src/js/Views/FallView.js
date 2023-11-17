@@ -1,5 +1,4 @@
 import View from './View.js';
-import {deck as deckData} from '../app.js';
 
 export default class FallView extends View{
 
@@ -8,30 +7,20 @@ export default class FallView extends View{
 
 
 	/**
-	 * Очищает HTML бито
-	 */
-	#clearFall = () => {
-		this.clear(this.#fallHtmlElem);
-	};
-
-	
-	/**
      * Обновляет бито относительно количества карт
      * @param {*} fall [{}, {}, ...]
      */
 	updateFall = (fall) => {
 
-		let cardsCount = deckData.getCardsCount(fall);
+		const cardsCount = this.getSmalledCardsCount(fall);
 
 		if(cardsCount == 0){ return; }
 
-		this.#clearFall();
+		this.clear(this.#fallHtmlElem);
 
-		while(cardsCount > 0){
+		for(let i = cardsCount; i > 0; i--){
 			const className = 'fall__card-img';
 			this.createCardBack(className, this.#fallHtmlElem);
-
-			cardsCount--;
 		}
 
 	};

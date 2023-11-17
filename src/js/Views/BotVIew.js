@@ -7,21 +7,13 @@ export default class BotView extends View{
 
 
 	/**
-	 * Очищает HTML бота
-	 */
-	#clearBot = () => {
-		this.clear(this.#botHtmlElem);
-	};
-
-
-	/**
      * Обновляет карты бота
      * @param {*} cards [{}, {}, ...]
      */
 	updateBotCards = (cards) => {
 		if(cards.length == 0) return;
 
-		this.#clearBot();
+		this.clear(this.#botHtmlElem);
         
 		let cardsCount = cards.length;
 

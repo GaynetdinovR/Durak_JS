@@ -1,13 +1,12 @@
 export default class Player{
 
+	//Карты
 	#cards = [];
 
 	constructor(cards, trumpSuit){
-		this.#cards = cards;
 		this.trumpSuit = trumpSuit;
-		this.#cards = this._sortCards(this.#cards);
+		this.#cards = this._sortCards(cards);
 	}
-
 	
 	/**
      * Возвращает карты игрока
@@ -17,14 +16,23 @@ export default class Player{
 		return this.#cards;
 	};
 
+	/**
+	 * Добавляет карты
+	 * @param {*} card object {} 
+	 */
+	addCards = (cards) => {
+		for(const card of cards){
+			this.addCard(card);
+		}
+	};
+
 
 	/**
 	 * Добавляет карту
 	 * @param {*} card object {} 
 	 */
 	addCard = (card) => {
-		this.#cards.push(card);
-		this.#cards = this._sortCards(this.#cards);
+		this.#cards = this._sortCards([...this.#cards, card]);
 	};
 
 
@@ -34,7 +42,7 @@ export default class Player{
 	 * @returns object {}
 	 */
 	giveCard = (cardName) => {
-		const card = this._findCardByName(cardName);
+		const card = this.findCardByName(cardName);
 
 		this._deleteCard(cardName);
 
@@ -47,7 +55,7 @@ export default class Player{
 	 * @param {*} name string
 	 * @returns object {}
 	 */
-	_findCardByName = (name) => {
+	findCardByName = (name) => {
 		return this.#cards.filter(card => card.name === name);
 	};
 
@@ -62,7 +70,7 @@ export default class Player{
 
 
 	/**
-	 * Сортирует карты игрока ( Сначала джокеры, затем козырные по убыванию, затем остальные по убыванию )
+	 * Сортирует карты игрока ( Сначала козырные по убыванию, затем остальные по убыванию )
 	 * @param {*} cards [{}, {}, ...]
 	 * @returns [{}, {}, ...]
 	 */
@@ -76,11 +84,10 @@ export default class Player{
 
 		cards.sort(compare);
 
-		let trumpCards = cards.filter(card => card.suit == this.trumpSuit);
-		let jockers = cards.filter(card => card.suit == 'Jocker');
-		let notTrumpCards = cards.filter(card => card.suit != this.trumpSuit && card.suit != 'Jocker');
+		const trumpCards = cards.filter(card => card.suit == this.trumpSuit);
+		const notTrumpCards = cards.filter(card => card.suit != this.trumpSuit && card.suit != 'Jocker');
 
-		return [...jockers, ...trumpCards, ...notTrumpCards];
+		return [...trumpCards, ...notTrumpCards];
 
 	};
 

@@ -1,18 +1,9 @@
 import View from './View.js';
-import {deck as deckData} from '../app.js';
 
 export default class DeckView extends View{
 
 	//HTMLElem
 	#deckHtmlElem = document.querySelector('#game_deck');
-
-	
-	/**
-	 * Очищает HTML колоды
-	 */
-	#clearDeck = () => {
-		this.clear(this.#deckHtmlElem);
-	};
 
 
 	/**
@@ -23,14 +14,10 @@ export default class DeckView extends View{
      */
 	updateDeck = (deck, trumpCard, isCreated = false) => {
 
-		this.#clearDeck();
+		this.clear(this.#deckHtmlElem);
 
-		let cardsCount = deckData.getCardsCount(deck);
-
-		while(cardsCount > 0){
+		for(let i = this.getSmalledCardsCount(deck); i > 0; i--){
 			this.createCardBack('deck__card', this.#deckHtmlElem);
-
-			cardsCount--;
 		}
 
 		if(!isCreated){

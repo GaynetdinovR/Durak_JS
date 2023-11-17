@@ -8,14 +8,6 @@ export default class PlayerView extends View{
 
 
 	/**
-	 * Очищает HTML игрока
-	 */
-	#clearPlayer = () => {
-		this.clear(this.#playerHtmlElem);
-	};
-
-
-	/**
      * Обновляет карты игрока
      * @param {*} cards [{}, {}, ...]
      */
@@ -23,7 +15,7 @@ export default class PlayerView extends View{
 	updatePlayerCards = (cards) => {
 		if(cards.length == 0) return;
 
-		this.#clearPlayer();
+		this.clear(this.#playerHtmlElem);
 
 		for(const card of cards){
             

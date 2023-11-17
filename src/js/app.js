@@ -2,27 +2,32 @@
 
 import Deck from './Deck.js';
 import Display from './Display.js';
-import Animation from './Animations/Animation.js';
 import Player from './Player.js';
 import Bot from './Bot.js';
 import Table from './Table.js';
-
-import { initAnimation } from './Animations/animations.js';
+import Fall from './Fall.js';
+import Game from './Game.js';
 
 const deck = new Deck();
+const fall = new Fall();
 const display = new Display();
 const table = new Table();
-const animation = new Animation();
+const game = new Game();
 
-const cardsCount = 12;
-const initTime = 400/*1600*/; 
+const cardsCountToPlayer = 6;
 
 const bot = new Bot([], deck.trumpCard.suit);
 const player = new Player([], deck.trumpCard.suit);
 
-initAnimation.initAnimation(cardsCount, initTime);
+game.giveCardsToPlayers(cardsCountToPlayer);
 
-display.updateFall(deck.fall);
+localStorage.setItem('whose_move', 'player');
+
+display.initUpdate();
+
+bot.monitorChanges(Object.assign([], table.getCards()));
+
+console.log(bot.getCards());
 
 export {
 	deck,
@@ -30,5 +35,5 @@ export {
 	bot,
 	display,
 	table,
-	animation,
+	fall
 };

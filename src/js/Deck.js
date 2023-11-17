@@ -6,6 +6,8 @@ export default class Deck{
 	#cards = data.cards;
 	// Масти
 	#suits = data.suits;
+	// Колода
+	deck = [];
 
 	constructor(){
 		this.#initialize();
@@ -15,25 +17,9 @@ export default class Deck{
      * Инициализирует необходимые данные
      */
 	#initialize = () => {
-		this.deck = this.#bundleDeck();
+		this.#bundleDeck();
 		this.#shuffle();
-		this.trumpCard = this.#getTrumpCard();
-		this.fall = [];
-	};
-
-
-	/**
-     * Добавляет джокеров в колоду
-     * @param {*} result [{}, {}, ...]
-     * @returns deck
-     */
-	#addJockers = (deck) => {
-		const jockers = data.jockers;
-
-		deck.push(jockers[0]);
-		deck.push(jockers[1]);
-
-		return deck;
+		this.#setTrumpCard();
 	};
 
 
@@ -64,17 +50,6 @@ export default class Deck{
 
 
 	/**
-     * Возвращает цвет карты
-     * @param {*} card string
-     * @param {*} suit string
-     * @returns string
-     */
-	#getCardColor = (suit) => {
-		return (suit[0] == 'C' || suit[0] == 'S') ? 'black' : 'red';
-	};
-
-
-	/**
      * Возвращает название карты
      * @param {*} card string
      * @param {*} suit string
@@ -86,32 +61,22 @@ export default class Deck{
 
 
 	/**
-     * Собирает и возвращает колоду
-     * @returns [{}, {}, ...]
+     * Собирает колоду
      */
 	#bundleDeck = () => {
 
-		let deck = [];
-    
 		for(let card of this.#cards){
 			for(let suit of this.#suits){
-                
 				const cardInfo = {
 					path: this.#getCardPath(card, suit),
 					name: this.#getCardName(card, suit),
-					color: this.#getCardColor(suit),
 					power: this.#getCardPower(card),
 					suit: suit
 				};
     
-				deck.push(cardInfo);
-    
+				this.deck.push(cardInfo);
 			}        
 		}
-
-		deck = this.#addJockers(deck);
-        
-		return deck;
     
 	};
 
@@ -125,26 +90,11 @@ export default class Deck{
 
 
 	/**
-     * Возвращает козырную карту
+     * Выбирает козырную карту
      */
-	#getTrumpCard = () => {
-		return this.deck[this.deck.length - 1];
+	#setTrumpCard = () => {
+		this.trumpCard = this.deck[this.deck.length - 1];
 	};
-
-
-	/**
-     * Перемещает карту в бито
-     * @param {*} card {}
-     */
-	moveToFall = (card) => {
-
-		if(this.deck.length == 0) return;
-
-		const i = this.deck.indexOf(card);
-
-		this.fall.push(this.deck.splice(i, 1));
-
-	}; 
 
 
 	/**
@@ -154,26 +104,6 @@ export default class Deck{
      */
 	giveCards = (count) => {
 		return this.deck.splice(0, count);
-	};
-
-
-	/**
-     * Возвращает количество карт, которые нужно показать в колоде
-     * @param {*} deck [{}, {}, ...]
-     * @returns number
-     */
-	getCardsCount = (deck) => {
-
-		if(deck.length == 54){ return 7; }
-
-		if(deck.length == 1){ return 0; } 
-
-		if(deck.length > 1 && deck.length < 7){ return 1; } 
-
-		if(Math.floor(deck.length / 7) == 7){ return 6; }
-
-		return Math.floor(deck.length / 7);
-        
 	};
 
 }
