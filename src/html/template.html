@@ -18,18 +18,11 @@
 		<div class="header__game-info">
 
 			<span class="header__game-mode">
-				<span>Режим: </span>
-				<span id="game_mode"></span>
-			</span>
-
-			<span class="header__game-difficulty">
-				<span>Уровень ИИ:</span>
-				<span id="game_difficulty"></span>
+				<span>Уровень ИИ:</span><span id="game_mode"></span>
 			</span>
 
 			<span class="header__game-cards-count">
-				<span>Количество карт:</span>
-				<span id="game_cards-count"></span>
+				<span>Количество карт:</span><span id="game_cards-count"></span>
 			</span>
 
 		</div>
@@ -62,9 +55,9 @@
 
 		<section class="display">
 
-			<div class="deck" id="game_deck">
-
-			</div>
+			<div class="deck" id="game_deck"></div>
+			
+			<span class="deck-count" id="game_deck-count"></span>
 
 			<div class="fall" id="game_fall">
 
@@ -74,15 +67,16 @@
 
 			</div>
 
+			<span class="fall-count" id="game_fall-count"></span>
+
 			<div class="player">
 
 				<div class="player__cards" id="game_player">
-
 				</div>
 
 				<div class="player__controls">
 
-					<button class="player__get-cards" id="get" disabled>
+					<button class="player__get-cards" id="game_get-all-cards" disabled>
 						Поднять
 					</button>
 
@@ -95,12 +89,11 @@
 			</div>
 
 			<div class="table" id="game_table">
-
+				<div class="table__cards-to-defend" id="game_table-to-defend"></div>
+				<div class="table__cards-to-beat" id="game_table-to-beat"></div>
 			</div>
 
-			<div class="bot" id="game_bot">
-
-			</div>
+			<div class="bot" id="game_bot"></div>
 
 		</section>
 

@@ -45,15 +45,33 @@
         transform: translateX(-50%)
 
         display: flex
+        align-items: flex-end
+        justify-content: flex-start
 
     &__card
+        background: none
+        border: none
+
         width: 20px
 
         transition: 200ms
         cursor: pointer
 
-        &:not(.player__last-card):hover
+        &:not(.player__last-card):not(.player__card-for-attack):hover
             width: 60px
+
+    &__card-for-attack
+        margin-bottom: 20px
+        margin-right: 20px
+
+        & img
+            width: 100px
+
+    &__card:disabled
+        filter: brightness(0.5)
+
+        &:hover
+            width: 100px
 
     &__last-card
         width: 100px
@@ -61,3 +79,7 @@
     &__card-img
         width: 100px
         object-fit: contain
+
+@for $i from 1 through 54
+    .player__card:nth-child(#{$i})
+        z-index: $i

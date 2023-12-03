@@ -1,15 +1,32 @@
 .table
     position: absolute
-    top: calc(50% - 95px)
+    top: calc(50% - 115px)
     left: 50%
 
     transform: translateX(-50%)
 
-    display: flex
+    &__cards-to-beat,
+    &__cards-to-defend
+        display: flex
 
-    &__card
+    &__cards-to-defend
+        position: absolute
+        height: 30px
+        top: 30px
+        left: 10px
+    //     position: absolute
+    //     z-index: 2
+    //     right: -10px
+    //     bottom: -40px
+
+    &__card-to-beat,
+    &__card-to-defend
         width: 100px
         margin: 0 10px
+
+        border: none
+        background: none
+        padding: 0
 
         & img
             max-width: 100%

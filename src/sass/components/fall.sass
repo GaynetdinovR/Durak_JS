@@ -27,3 +27,17 @@
 @for $i from 1 through 8
     .fall__card:nth-child(#{$i})
         margin-top: calc(20px * ($i - 1))
+
+
+.fall-count
+    position: absolute
+
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100px
+
+    top: 50px
+    right: 50px
+
+    @include font($fc: $white, $fz: 24px)

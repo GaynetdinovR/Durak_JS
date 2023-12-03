@@ -10,10 +10,4 @@ const playerView = new PlayerView();
 const deckView = new DeckView();
 const tableView = new TableView();
 
-export {
-	botView,
-	playerView,
-	deckView,
-	fallView,
-	tableView,
-};
+export { botView, playerView, deckView, fallView, tableView };

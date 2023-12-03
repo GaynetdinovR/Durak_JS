@@ -23,3 +23,16 @@
 @for $i from 1 through 8
     .deck__card:nth-child(#{$i})
         margin-top: calc(80px + 20px * ($i - 1))
+
+.deck-count
+    position: absolute
+
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100px
+
+    top: 50px
+    left: 50px
+
+    @include font($fc: $white, $fz: 24px)
