@@ -29,15 +29,12 @@ export default class FallView extends View {
 
         this.#fallCountHtmlElem.innerHTML = fall.length;
 
-        if (cardsCount == 0) {
-            return;
-        }
+        if (cardsCount == 0) return;
 
         this.clear(this.#fallHtmlElem);
 
         for (let i = cardsCount; i > 0; i--) {
-            const className = 'fall__card';
-            this.createCardBack(className, this.#fallHtmlElem);
+            this.createCardBack('fall__card', this.#fallHtmlElem);
         }
     };
 }

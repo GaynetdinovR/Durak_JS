@@ -19,7 +19,7 @@ export default class Other {
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
-            timer: 1500,
+            timer: 3000,
             timerProgressBar: true,
             showConfirmButton: false,
             didOpen: (toast) => {
@@ -30,7 +30,7 @@ export default class Other {
 
         Toast.fire({
             icon: icon,
-            text: message,
+            title: message,
         });
     };
 }

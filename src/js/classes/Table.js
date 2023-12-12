@@ -29,18 +29,22 @@ export default class Table {
         this.getCards().push(card);
     };
 
-    /**
-     * "Отдает" все карты со стола
-     * @returns  [{}, {}, ...]
-     */
-    giveAllCards = () => {
-        const cards = Object.assign([], this.getCards());
-
+    addDefendCards = (cards) => {
         for (const card of cards) {
             if (!card.isBeaten) continue;
 
             cards.push(card.isBeaten);
         }
+
+        return cards;
+    };
+
+    /**
+     * "Отдает" все карты со стола
+     * @returns  [{}, {}, ...]
+     */
+    giveAllCards = () => {
+        const cards = this.addDefendCards(Object.assign([], this.getCards()));
 
         this.setCards([]);
 

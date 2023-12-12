@@ -3,36 +3,36 @@ import data from '../../data/data.json';
 
 export default class BotDefend {
     /**
-     * Проверяет проходит ли карты по "рациональному условию"
+     * Проверяет проходят ли карты по "рациональному условию"
      * @param {*} cardToDefend {}
      * @param {*} cardToBeat {}
      * @returns bool
      */
     #isRationalCondition = (cardToDefend, cardToBeat) => {
-        if (bot.isPairForCard(cardToBeat)) return false;
+        if (bot.isPairForCard(cardToBeat)) return true;
 
-        if (bot.isGoodCard(cardToBeat)) return false;
+        if (game.isGoodCard(cardToBeat)) return true;
 
-        if (bot.isGoodCard(cardToDefend)) return false;
+        if (game.isGoodCard(cardToDefend)) return true;
 
-        return true;
+        return false;
     };
 
     /**
-     * Проверяет рационально ли бить карту (для продвинутого ИИ)
-     * Например: если карта мелкая, а карты для защиты крупные, то не рационально, и т.п.
+     * Проверяет рационально ли поднять карту (для продвинутого ИИ)
+     * Например: если карта мелкая, а карты для защиты крупные, то рационально, и т.п.
      * @param {*} cardsToDefend {}
      * @param {*} cardToBeat {}
      * @returns bool
      */
-    #isRationalToBeatCard = (cardsToDefend, cardToBeat) => {
+    #isRationalToRaiseCard = (cardsToDefend, cardToBeat) => {
         const results = [];
 
         for (const cardToDefend of cardsToDefend) {
             results.push(this.#isRationalCondition(cardToDefend, cardToBeat));
         }
 
-        return !results.every((item) => item == false);
+        return results.includes(true);
     };
 
     /**
@@ -53,22 +53,19 @@ export default class BotDefend {
     };
 
     /**
-     * Защита для легкого уровня ИИ
+     * Самый легкий уровень защиты
      * @param {*} cardsToDefend
-     * @returns
+     */
+    #stupidModeDefend = (cardsToDefend) => {
+        bot.beatCard(other.getRandomArrayElem(cardsToDefend));
+    };
+
+    /**
+     * Легкий уровень защиты
+     * @param {*} cardsToDefend [{}, {}, ...]
      */
     #easyModeDefend = (cardsToDefend) => {
-        if (cardsToDefend.length == 0) {
-            bot.getAllCardsFromTable();
-
-            display.isPlayerMoveToFallBtnDisabled(true);
-
-            return;
-        }
-
-        const card = other.getRandomArrayElem(cardsToDefend);
-
-        bot.beatCard(card);
+        bot.beatCard(bot.getSmallestCard(cardsToDefend));
     };
 
     /**
@@ -76,29 +73,16 @@ export default class BotDefend {
      * @param {*} cardsToDefend [{}, {}, ...]
      */
     #normalModeDefend = (cardsToDefend) => {
-        if (cardsToDefend.length == 0) {
-            bot.getAllCardsFromTable();
-
-            display.isPlayerMoveToFallBtnDisabled(true);
-
-            return;
-        }
-
-        const card = bot.getSmallestCard(cardsToDefend);
-
-        bot.beatCard(card);
+        return cardsToDefend;
     };
 
     /**
-     * Общий метод защиты
+     * Выбирает метод защиты относительно уровня ИИ
+     * @param {*} cardsToDefend [{}, {}, ...]
      */
-    defend = () => {
-        console.log('defend GO!');
-
-        const cardToBeat = table.findCardToBeat();
-        const cardsToDefend = this.#findCardsToDefend(cardToBeat);
-
+    #modeAction = (cardsToDefend) => {
         const defendMode = {
+            stupid: () => this.#stupidModeDefend(cardsToDefend),
             easy: () => this.#easyModeDefend(cardsToDefend),
             normal: () => this.#normalModeDefend(cardsToDefend),
             hard: () => {},
@@ -106,6 +90,21 @@ export default class BotDefend {
         };
 
         defendMode[data.mode]();
+    };
+
+    /**
+     * Общий метод защиты
+     */
+    defend = () => {
+        const cardsToDefend = this.#findCardsToDefend(table.findCardToBeat());
+
+        if (cardsToDefend.length != 0) {
+            this.#modeAction(cardsToDefend);
+            return;
+        }
+
+        display.isPlayerMoveToFallBtnDisabled(true);
+        bot.raiseTableCards();
     };
 }
 

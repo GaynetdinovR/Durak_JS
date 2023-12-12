@@ -2,10 +2,7 @@ import data from '../../data/data.json';
 import { bot, display, game, other, table } from '../../start';
 
 export default class BotAttack {
-    /**
-     * Легкий уровень атаки
-     */
-    #easyModeAttack = () => {
+    #findCardsToAttack = () => {
         const cardsToAttack = [];
 
         for (const card of bot.getCards()) {
@@ -14,44 +11,65 @@ export default class BotAttack {
             }
         }
 
-        if (cardsToAttack.length != 0) {
-            display.isPlayerGetAllCardsBtnDisabled(false);
+        return cardsToAttack;
+    };
 
-            bot.addCardToTable(other.getRandomArrayElem(cardsToAttack));
+    /**
+     * Самый легкий уровень атаки
+     * @param cardsToAttack [{}, {}, ...]
+     */
+    #stupidModeAttack = (cardsToAttack) => {
+        bot.addCardToTable(other.getRandomArrayElem(cardsToAttack));
+    };
 
-            return;
-        }
-
-        game.newMoveAction();
-
-        display.isPlayerGetAllCardsBtnDisabled(true);
+    /**
+     * Легкий уровень атаки
+     * @param cardsToAttack [{}, {}, ...]
+     */
+    #easyModeAttack = (cardsToAttack) => {
+        bot.addCardToTable(bot.getSmallestCard(cardsToAttack));
     };
 
     /**
      * Нормальный уровень атаки
+     * @param {*} cardsToAttack [{}, {}, ...]
      */
-    #normalModeAttack = () => {
-        const cardToAttack = bot.getSmallestCard(bot.getCards());
+    #normalModeAttack = (cardsToAttack) => {
+        return cardsToAttack;
+    };
 
-        bot.addCardToTable(cardToAttack);
+    /**
+     * Выбирает метод атаки относительно уровня ИИ
+     * @param {*} cardsToAttack [{}, {}, ...]
+     */
+    #modeAction = (cardsToAttack) => {
+        const attackMode = {
+            stipid: () => this.#stupidModeAttack(cardsToAttack),
+            easy: () => this.#easyModeAttack(cardsToAttack),
+            normal: () => this.#normalModeAttack(cardsToAttack),
+            hard: () => {},
+            extreme: () => {},
+        };
+
+        attackMode[data.mode]();
     };
 
     /**
      * Общий метод атаки
      */
     attack = () => {
-        console.log('attack GO!');
-
         if (bot.getCards().length == 0) return;
 
-        const attackMode = {
-            easy: () => this.#easyModeAttack(),
-            normal: () => this.#normalModeAttack(),
-            hard: () => {},
-            extreme: () => {},
-        };
+        const cardsToAttack = this.#findCardsToAttack();
 
-        attackMode[data.mode]();
+        if (cardsToAttack.length == 0) {
+            display.isPlayerRaiseBtnDisabled(true);
+            game.newMoveAction();
+            return;
+        }
+
+        display.isPlayerRaiseBtnDisabled(false);
+        this.#modeAction(cardsToAttack);
     };
 }
 

@@ -5,6 +5,12 @@ export default class BotView extends View {
     //Элемент карт бота
     #botHtmlElem = document.querySelector('#game_bot');
 
+    #formatCardClassName = (card, cards) => {
+        const lastCardClassName = card == cards[cards.length - 1] ? ' bot__last-card' : '';
+
+        return 'bot__card' + lastCardClassName;
+    };
+
     /**
      * Обновляет карты бота
      * @param {*} cards [{}, {}, ...]
@@ -16,13 +22,10 @@ export default class BotView extends View {
 
         if (cards.length == 0) return;
 
-        for (let i = 0; i < cards.length; i++) {
-            const className = 'bot__card';
+        for (const card of cards) {
+            const className = this.#formatCardClassName(card, cards);
 
             this.createCardBack(className, this.#botHtmlElem);
         }
-
-        const lastCard = document.querySelector('.bot__card:last-child');
-        lastCard.classList.add('bot__last-card');
     };
 }

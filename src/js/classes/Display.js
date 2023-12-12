@@ -38,7 +38,7 @@ export default class Display {
      * Изменяет disabled на кнопке "Поднять"
      * @param {*} disabled bool
      */
-    isPlayerGetAllCardsBtnDisabled = (disabled) => {
-        playerView.isPlayerGetAllCardsBtnDisabled(disabled);
+    isPlayerRaiseBtnDisabled = (disabled) => {
+        playerView.isPlayerRaiseBtnDisabled(disabled);
     };
 }

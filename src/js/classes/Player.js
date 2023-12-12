@@ -1,4 +1,4 @@
-import { game, table } from '../start';
+import { bot, game, table } from '../start';
 
 export default class Player {
     //Карты
@@ -30,7 +30,7 @@ export default class Player {
     /**
      * Забирает в руку игрока все карты со стола
      */
-    getAllCardsFromTable = () => {
+    raiseTableCards = () => {
         const cards = table.giveAllCards();
 
         for (const card of cards) {
@@ -38,6 +38,8 @@ export default class Player {
 
             this.addCard(card);
         }
+
+        if (localStorage.getItem('whose_move') == 'bot') bot.addPlayerRaisedCards(cards);
 
         game.giveCardsToPlayers();
     };
@@ -79,6 +81,10 @@ export default class Player {
         table.beatCard(this.giveCard(card));
     };
 
+    /**
+     * Отдает карту на стол
+     * @param {*} card
+     */
     addCardToTable = (card) => {
         table.addCard(this.giveCard(card));
     };
@@ -101,21 +107,15 @@ export default class Player {
     };
 
     /**
-     * Сортирует карты игрока ( Сначала козырные по убыванию, затем остальные по убыванию )
+     * Возвращает отсортированные карты ( Сначала козырные по убыванию, затем остальные по убыванию )
      * @param {*} cards [{}, {}, ...]
      * @returns [{}, {}, ...]
      */
     _getSortedCards = (cards) => {
-        const compare = (a, b) => {
-            if (a.power > b.power) return -1;
-            if (a.power == b.power) return 0;
-            if (a.power < b.power) return 1;
-        };
-
-        cards.sort(compare);
+        cards.sort((a, b) => b.power - a.power);
 
         const trumpCards = cards.filter((card) => card.suit == this.trumpSuit);
-        const notTrumpCards = cards.filter((card) => card.suit != this.trumpSuit && card.suit != 'Jocker');
+        const notTrumpCards = cards.filter((card) => card.suit != this.trumpSuit);
 
         return [...trumpCards, ...notTrumpCards];
     };

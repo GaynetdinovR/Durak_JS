@@ -30,7 +30,7 @@ export default class View {
         const img = document.createElement('img');
 
         img.src = path;
-        img.className = `${className}-img`;
+        img.className = `${className.split(' ')[0]}-img`;
         elem.className = className;
         img.alt = name;
 

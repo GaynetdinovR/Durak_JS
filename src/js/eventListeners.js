@@ -1,3 +1,4 @@
+import { playerView } from './classes/views/views.js';
 import { display, player, table, game } from './start.js';
 
 /**
@@ -12,6 +13,8 @@ const delay = async (ms) => await new Promise((resolve) => setTimeout(resolve, m
  * @param {*} e eventObject
  */
 const playerCardClickListener = (e) => {
+    if (!e.target.alt) return;
+
     if (localStorage.getItem('whose_move') == 'player') {
         display.isPlayerMoveToFallBtnDisabled(false);
         game.playerAttack(e.target.alt);
@@ -19,6 +22,8 @@ const playerCardClickListener = (e) => {
     }
 
     game.playerDefend(e.target.alt);
+
+    display.update();
 };
 
 /**
@@ -27,6 +32,7 @@ const playerCardClickListener = (e) => {
  */
 const moveToFallBtnListener = () => {
     display.isPlayerMoveToFallBtnDisabled(true);
+
     game.newMoveAction();
 };
 
@@ -34,10 +40,11 @@ const moveToFallBtnListener = () => {
  * Слушатель кнопки "Поднять"
  * @param {*} e eventObject
  */
-const getAllCardsBtnListener = () => {
-    display.isPlayerGetAllCardsBtnDisabled(true);
+const raiseBtnListener = () => {
+    display.isPlayerRaiseBtnDisabled(true);
+    playerView.resetChosenCard();
 
-    player.getAllCardsFromTable();
+    player.raiseTableCards();
 
     display.update();
 
@@ -48,15 +55,16 @@ const getAllCardsBtnListener = () => {
  * Слушатель карты, от которой защищается игрок
  */
 const playerTableCardListener = () => {
-    const cardToDefendName = document.querySelector('.player__card-for-attack-img').alt;
+    const cardToDefendParent = document.querySelector('.player__card-for-attack');
+    if (!cardToDefendParent) return;
 
-    const cardToDefend = player.giveCard(player.findCardByName(cardToDefendName));
-
-    table.beatCard(cardToDefend);
+    const cardToDefendElem = cardToDefendParent.childNodes[0];
+    const cardToDefend = player.giveCard(player.findCardByName(cardToDefendElem.alt));
 
     delete cardToDefend['chosenForAttack'];
+    table.beatCard(cardToDefend);
 
     display.update();
 };
 
-export { delay, playerCardClickListener, playerTableCardListener, moveToFallBtnListener, getAllCardsBtnListener };
+export { delay, playerCardClickListener, playerTableCardListener, moveToFallBtnListener, raiseBtnListener };

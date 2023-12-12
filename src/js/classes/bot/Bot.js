@@ -1,5 +1,5 @@
 import Player from '../Player.js';
-import { deck, display, fall, player, table } from '../../start.js';
+import { display, game, player, table } from '../../start.js';
 
 import { botAttack } from './BotAttack.js';
 import { botDefend } from './BotDefend.js';
@@ -7,6 +7,10 @@ import { botDefend } from './BotDefend.js';
 export default class Bot extends Player {
     //Карты
     #cards = [];
+    //"Слабые" масти, карты которых игрок поднял или отбил козырем
+    #playerWeakSuits = { atMove: 0, suits: [] };
+    //Поднятые игроком карты
+    #playerRaisedCards = [];
 
     constructor(cards, trumpSuit) {
         super(cards, trumpSuit);
@@ -14,9 +18,41 @@ export default class Bot extends Player {
     }
 
     /**
+     * Геттер для "слабых" мастей
+     * @returns object
+     */
+    getWeakSuits = () => {
+        return this.#playerWeakSuits;
+    };
+
+    /**
+     * Добавить карты к поднятым игроком карт
+     * @param {*} cards [{}, {}, ...]
+     */
+    addPlayerRaisedCards = (cards) => {
+        this.setPlayerRaisedCards([...this.getPlayerRaisedCards(), ...cards]);
+    };
+
+    /**
+     * Сеттер для поднятых игроком карт
+     * @param {*} cards [{}, {}, ...]
+     */
+    setPlayerRaisedCards = (cards) => {
+        this.#playerRaisedCards = cards;
+    };
+
+    /**
+     * Геттер для поднятых игроком карт
+     * @returns [{}, {}, ..]
+     */
+    getPlayerRaisedCards = () => {
+        return this.#playerRaisedCards;
+    };
+
+    /**
      * Возвращает меньшую карту по сортированной колоде
-     * @param {*} cards
-     * @returns
+     * @param {*} cards [{}, {}, ...]
+     * @returns object
      */
     getSmallestCard = (cards) => {
         return this._getSortedCards(cards)[cards.length - 1];
@@ -57,7 +93,7 @@ export default class Bot extends Player {
             3: false,
         };
 
-        return results[this.#getGamePhase()];
+        return results[game.getGamePhase()];
     };
 
     /**
@@ -66,32 +102,10 @@ export default class Bot extends Player {
      * @returns bool
      */
     isSafeEnvironment = () => {
-        const cardsCoundCondition = this.#checkByGamePhase() && this.#checkByCardsCount();
+        const cardsCountCondition = this.#checkByGamePhase() && this.#checkByCardsCount();
         const goodCardsCondition = this.#checkByGoodCards() && this.#checkByGamePhase();
 
-        return cardsCoundCondition || goodCardsCondition;
-    };
-
-    /**
-     * Получает фазу игры
-     * @returns string
-     */
-    #getGamePhase = () => {
-        if (deck.getDeck().length >= 6 && fall.getFall().length <= 15) return '1';
-
-        if (deck.getDeck().length < 6 && fall.getFall().length > 15 && fall.getFall().length <= 32) return '2';
-
-        if (deck.getDeck().length == 0 && fall.getFall().length > 32) return '3';
-    };
-
-    /**
-     * Проверяет "хорошая" ли карта
-     * Карта "хорошая" если: 1. Ее значение >= 10, 2. Она козырная и ее значение >= 8
-     * @param {*} card
-     * @returns
-     */
-    isGoodCard = (card) => {
-        return card.power >= 10 || (card.suit == this.trumpSuit && card.power >= 8);
+        return cardsCountCondition || goodCardsCondition;
     };
 
     /**
@@ -100,13 +114,7 @@ export default class Bot extends Player {
      * @returns bool
      */
     isPairForCard = (card) => {
-        for (const botCard of this.getCards()) {
-            if (botCard.power == card.power) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.getCards().filter((botCard) => botCard.power == card.power).length != 0;
     };
 
     /**
@@ -115,17 +123,67 @@ export default class Bot extends Player {
     #botMove = () => {
         const whose_move = localStorage.getItem('whose_move');
 
-        if (whose_move == 'bot') {
-            botAttack.attack();
-        }
+        if (whose_move == 'bot') botAttack.attack();
 
-        if (whose_move == 'player') {
-            botDefend.defend();
-        }
+        if (whose_move == 'player') botDefend.defend();
 
         display.update();
 
         this.monitorChanges(structuredClone(table.getCards()));
+    };
+
+    /**
+     * Проверяет бил ли игрок какие-либо масти козырем
+     */
+    #checkWeakSuits = () => {
+        for (const card of table.getCards()) {
+            if (!card.isBeaten) continue;
+
+            const isNewSuits = game.getMovesCount() - this.getWeakSuits().atMove >= 4;
+
+            const whoseMoveCondition = localStorage.getItem('whose_move') == 'bot';
+            const isDefendCardTrump = card.isBeaten.suit == this.trumpSuit;
+            const isBeatenCardNotTrump = card.suit != this.trumpSuit;
+
+            if (whoseMoveCondition && isDefendCardTrump && isBeatenCardNotTrump) {
+                this.#setWeakSuits(card, isNewSuits);
+            }
+        }
+    };
+
+    deletePlayerRaisedCard = (card) => {
+        const cards = this.getPlayerRaisedCards().filter((playerCard) => {
+            return JSON.stringify(playerCard) != JSON.stringify(card);
+        });
+
+        this.setPlayerRaisedCards(cards);
+    };
+
+    #checkPlayerRaisedCards = () => {
+        const cards = table.addDefendCards(Object.assign([], table.getCards()));
+
+        for (const playerCard of this.getPlayerRaisedCards()) {
+            for (const tableCard of cards) {
+                if (JSON.stringify(playerCard) == JSON.stringify(tableCard)) {
+                    console.log('deleted!');
+                    this.deletePlayerRaisedCard(playerCard);
+                }
+            }
+        }
+    };
+
+    /**
+     * Устанавливает масти, битые игроком с помощью козыря
+     * @param card {}
+     * @param isNewSuits bool
+     */
+    #setWeakSuits = (card, isNewSuits) => {
+        if (isNewSuits) {
+            this.getWeakSuits().atMove = game.getMovesCount();
+            this.getWeakSuits().suits = [];
+        }
+
+        this.getWeakSuits().suits.push(card.suit);
     };
 
     /**
@@ -134,10 +192,15 @@ export default class Bot extends Player {
      */
     monitorChanges = (tableCards) => {
         const timer = setInterval(() => {
-            const condition1 = JSON.stringify(tableCards) != JSON.stringify(table.getCards());
-            const condition2 = localStorage.getItem('whose_move') == 'bot' && table.getCards().length == 0;
+            const isTableChanged = JSON.stringify(tableCards) != JSON.stringify(table.getCards());
+            const IsBotsMove = localStorage.getItem('whose_move') == 'bot' && table.getCards().length == 0;
 
-            if (condition1 || condition2) {
+            if (isTableChanged) {
+                this.#checkPlayerRaisedCards();
+                this.#checkWeakSuits();
+            }
+
+            if (isTableChanged || IsBotsMove) {
                 this.#botMove();
 
                 clearInterval(timer);
