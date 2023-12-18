@@ -67,4 +67,13 @@ const playerTableCardListener = () => {
     display.update();
 };
 
-export { delay, playerCardClickListener, playerTableCardListener, moveToFallBtnListener, raiseBtnListener };
+/**
+ * Слушатель кнопки "Начать"
+ */
+const startBtnListener = () => {
+    game.startNewGame(...game.getStartData());
+};
+
+document.querySelector('#game_start').addEventListener('click', startBtnListener);
+
+export { delay, playerCardClickListener, playerTableCardListener, moveToFallBtnListener, raiseBtnListener, startBtnListener };

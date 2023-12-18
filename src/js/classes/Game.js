@@ -1,4 +1,10 @@
-import { bot, player, deck, display, table, other, fall } from '../start.js';
+import data from '../data/data.js';
+import { delay, moveToFallBtnListener, raiseBtnListener } from '../eventListeners.js';
+import { bot, player, deck, display, table, other, fall, setDeck, setPlayer, setBot } from '../start.js';
+import Deck from './Deck.js';
+import Bot from './Bot/Bot.js';
+import Player from './Player.js';
+import { playerView, view } from './views/views.js';
 
 export default class Game {
     //Количество ходов
@@ -155,5 +161,106 @@ export default class Game {
         if (deck.getDeck().length < 6 && fall.getFall().length > 15 && fall.getFall().length <= 32) return '2';
 
         if (deck.getDeck().length == 0 && fall.getFall().length > 32) return '3';
+    };
+
+    /**
+     * Действия перед началом игры
+     * @param {*} cardsCount number
+     * @param {*} mode stupid/easy/normal
+     * @param {*} whose_first bot/player
+     */
+    prestart = (cardsCount, mode, whose_first) => {
+        this.setBotsMode(mode);
+        this.setCards(cardsCount);
+        this.setWhoseFirst(whose_first);
+
+        setDeck(new Deck());
+        setBot(new Bot([], deck.getTrumpCard().suit));
+        setPlayer(new Player([], deck.getTrumpCard().suit));
+    };
+
+    /**
+     * Действия после начала игры
+     */
+    poststart = () => {
+        view.hide('menu', 'flex');
+        view.show('content', 'block');
+
+        delay(1000).then(() => {
+            playerView.playerMoveToFallBtn.addEventListener('click', moveToFallBtnListener);
+            playerView.playerRaiseBtn.addEventListener('click', raiseBtnListener);
+        });
+    };
+
+    /**
+     * Возвращает данные из меню
+     * @returns array
+     */
+    getStartData = () => {
+        const mode = document.querySelector('#menu_game-mode').value;
+        const cardsCount = document.querySelector('#menu__game-cards-count').value;
+        const whose_first = document.querySelector('#menu__game-whose-first').value;
+
+        return [cardsCount, mode, whose_first];
+    };
+
+    /**
+     * Начинает новую игру
+     * @param {*} cardsCount number
+     * @param {*} mode stupid/easy/normal
+     * @param {*} whose_first bot/player
+     */
+    startNewGame = (cardsCount, mode, whose_first) => {
+        this.prestart(cardsCount, mode, whose_first);
+
+        this.giveCardsToPlayersInit(6);
+
+        display.update();
+        display.updateHeader();
+
+        bot.monitorChanges(structuredClone(table.getCards()));
+
+        this.poststart();
+    };
+
+    /**
+     * Возвращает количество карт
+     * @param {*} cardsCount number
+     * @returns []
+     */
+    formatCardsByCardsCount = (cardsCount) => {
+        const count = {
+            12: () => data.cards.slice(10),
+            24: () => data.cards.slice(7),
+            36: () => data.cards.slice(4),
+            52: () => data.cards,
+        };
+
+        return count[cardsCount]();
+    };
+
+    /**
+     * Устанавливает данные о картах
+     * @param {*} cardsCount number
+     */
+    setCards = (cardsCount) => {
+        data.cardsCount = cardsCount;
+        data.cards = this.formatCardsByCardsCount(cardsCount);
+    };
+
+    /**
+     * Устанавливает режим бота
+     * @param {*} mode stupid/easy/normal
+     */
+    setBotsMode = (mode) => {
+        data.mode = mode;
+    };
+
+    /**
+     * Устанавливает кто ходит первый
+     * @param {*} whose_first bot/player
+     */
+    setWhoseFirst = (whose_first) => {
+        localStorage.setItem('whose_move', whose_first);
     };
 }

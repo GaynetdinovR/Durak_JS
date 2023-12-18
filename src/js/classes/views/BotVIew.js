@@ -5,6 +5,12 @@ export default class BotView extends View {
     //Элемент карт бота
     #botHtmlElem = document.querySelector('#game_bot');
 
+    /**
+     * Возвращает класс карты
+     * @param {*} card {}
+     * @param {*} cards [{}, {}, ...]
+     * @returns string
+     */
     #formatCardClassName = (card, cards) => {
         const lastCardClassName = card == cards[cards.length - 1] ? ' bot__last-card' : '';
 

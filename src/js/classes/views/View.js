@@ -1,4 +1,4 @@
-import data from '../../data/data.json';
+import data from '../../data/data.js';
 
 export default class View {
     /**
@@ -66,5 +66,29 @@ export default class View {
      */
     _isDisableElem = (elem, disabled) => {
         elem.disabled = disabled;
+    };
+
+    /**
+     * Убирает элемент
+     * @param {*} className string
+     * @param {*} display flex/block/grid/...
+     */
+    hide = (className, display) => {
+        const elem = document.querySelector('.' + className);
+
+        elem.classList.remove(display);
+        elem.classList.add('none');
+    };
+
+    /**
+     * Показывает элемент
+     * @param {*} className string
+     * @param {*} display flex/block/grid/...
+     */
+    show = (className, display) => {
+        const elem = document.querySelector('.' + className);
+
+        elem.classList.remove('none');
+        elem.classList.add(display);
     };
 }

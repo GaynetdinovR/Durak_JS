@@ -1,7 +1,10 @@
-import data from '../../data/data.json';
+import data from '../../data/data.js';
 import { bot, display, game, other, table } from '../../start';
 
 export default class BotAttack {
+    /**
+     * Находит карты для атаки
+     */
     #findCardsToAttack = () => {
         const cardsToAttack = [];
 
@@ -44,7 +47,7 @@ export default class BotAttack {
      */
     #modeAction = (cardsToAttack) => {
         const attackMode = {
-            stipid: () => this.#stupidModeAttack(cardsToAttack),
+            stupid: () => this.#stupidModeAttack(cardsToAttack),
             easy: () => this.#easyModeAttack(cardsToAttack),
             normal: () => this.#normalModeAttack(cardsToAttack),
             hard: () => {},

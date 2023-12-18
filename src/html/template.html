@@ -25,17 +25,51 @@
                             <img src="./assets/images/icons/arrow.png" alt="arrow" class="header__controls-btn-img" />
                         </button>
                     </li>
-
-                    <li class="header__controls-item">
-                        <button class="header__controls-btn" id="game_settings">
-                            <img src="./assets/images/icons/settings.png" alt="settings" class="header__controls-btn-img" />
-                        </button>
-                    </li>
                 </ul>
             </nav>
         </header>
 
-        <main class="content">
+        <aside class="menu flex">
+            <h2 class="menu__title">Дурак | Подкидной</h2>
+
+            <div class="menu__settings">
+                <div class="menu__game-mode">
+                    <span>Уровень ИИ:</span>
+
+                    <select class="menu__game-mode-select" name="menu_game_mode" id="menu_game-mode">
+                        <option value="stupid">Stupid</option>
+                        <option value="easy">Easy</option>
+                        <option value="normal">Normal</option>
+                    </select>
+                </div>
+
+                <div class="menu__game-cards-count">
+                    <span>Количество карт:</span>
+
+                    <select class="menu__game-cards-count-select" id="menu__game-cards-count">
+                        <option value="24">24</option>
+                        <option value="36">36</option>
+                        <option value="52">52</option>
+                    </select>
+                </div>
+
+                <div class="menu__game-whose-first">
+                    <span>Кто ходит первым:</span>
+
+                    <select class="menu__game-whose-first-select" id="menu__game-whose-first">
+                        <option value="bot">Bot</option>
+                        <option value="player">Player</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="menu__buttons">
+                <a href="https://ru.wikipedia.org/wiki" target="_blank" class="menu__btn-rules">Правила</a>
+                <button class="menu__btn-start" id="game_start">Начать</button>
+            </div>
+        </aside>
+
+        <main class="content none">
             <section class="display">
                 <div class="deck" id="game_deck"></div>
 

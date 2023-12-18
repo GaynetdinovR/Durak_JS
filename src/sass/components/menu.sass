@@ -1,0 +1,86 @@
+.menu
+    position: absolute
+    z-index: 1
+
+    width: 700px
+    height: 500px
+    padding: 30px
+    border-radius: 15px
+
+    border: 3px $black solid
+    background: linear-gradient(0deg, $purple 10%, $blue 60%)
+
+    justify-content: center
+    align-items: center
+    flex-direction: column
+
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+    font-family: $montserrat
+    font-weight: 700
+    color: $white
+
+    &__title
+        font-size: 36px
+
+    &__buttons
+        margin-top: 85px
+        display: flex
+        justify-content: center
+        align-items: center
+
+    &__btn-rules
+        background: $yellow
+
+    &__btn-start
+        background: $green
+
+    &__btn-rules,
+    &__btn-start
+        font-size: 24px
+        color: $white
+        font-weight: 700
+
+        display: flex
+        justify-content: center
+        align-items: center
+        border: none
+
+        margin: 0 20px
+        padding: 25px 0
+        min-width: 260px
+        border-radius: 10px
+
+        cursor: pointer
+        transition: 200ms
+
+        &:hover
+            opacity: 0.9
+
+    &__settings
+        margin-top: 60px
+
+    &__game-mode,
+    &__game-whose-first,
+    &__game-cards-count
+        margin-top: 25px
+        font-size: 20px
+
+        & select
+            font-size: 16px
+            font-family: $montserrat
+            font-weight: 600
+
+            outline: none
+            border: none
+
+            border-radius: 5px
+            padding: 5px
+            margin-left: 5px
+
+            cursor: pointer
+
+        & option
+            font-weight: 600

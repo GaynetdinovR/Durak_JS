@@ -1,5 +1,5 @@
 import { deckView, botView, playerView, fallView, tableView } from './views/views.js';
-import data from '../data/data.json';
+import data from '../data/data.js';
 
 export default class Display {
     //Элемент в header с уровнем ИИ

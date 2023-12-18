@@ -1,5 +1,5 @@
 import { bot, display, game, other, table } from '../../start.js';
-import data from '../../data/data.json';
+import data from '../../data/data.js';
 
 export default class BotDefend {
     /**

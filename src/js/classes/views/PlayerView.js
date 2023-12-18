@@ -39,6 +39,12 @@ export default class PlayerView extends View {
         return table.isPossibleToPlaceCardDefend(card);
     };
 
+    /**
+     * Возвращает класс карты
+     * @param {*} card {}
+     * @param {*} cards [{}, {}, ...]
+     * @returns string
+     */
     #formatCardClassName = (card, cards) => {
         const lastCardClassName = card == cards[cards.length - 1] ? ' player__last-card' : '';
         const chosenForAttackCardClassName = card.chosenForAttack ? ' player__card-for-attack' : '';
@@ -46,6 +52,9 @@ export default class PlayerView extends View {
         return 'player__card' + lastCardClassName + chosenForAttackCardClassName;
     };
 
+    /**
+     * Убирает выбранную игроком для атаки карту
+     */
     resetChosenCard = () => {
         const chosenCardElem = document.querySelector('.player__card-for-attack');
 

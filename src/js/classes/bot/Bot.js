@@ -151,6 +151,10 @@ export default class Bot extends Player {
         }
     };
 
+    /**
+     * Удаляет поднятую игроком карту
+     * @param {*} card {}
+     */
     deletePlayerRaisedCard = (card) => {
         const cards = this.getPlayerRaisedCards().filter((playerCard) => {
             return JSON.stringify(playerCard) != JSON.stringify(card);
@@ -159,13 +163,15 @@ export default class Bot extends Player {
         this.setPlayerRaisedCards(cards);
     };
 
+    /**
+     * Проверяет и удаляет поднятые игроком карты(если он их сбросил)
+     */
     #checkPlayerRaisedCards = () => {
         const cards = table.addDefendCards(Object.assign([], table.getCards()));
 
         for (const playerCard of this.getPlayerRaisedCards()) {
             for (const tableCard of cards) {
                 if (JSON.stringify(playerCard) == JSON.stringify(tableCard)) {
-                    console.log('deleted!');
                     this.deletePlayerRaisedCard(playerCard);
                 }
             }
